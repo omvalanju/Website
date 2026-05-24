@@ -1,0 +1,22 @@
+# Cache static assets aggressively
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache video with long expiry
+/*.mp4
+  Cache-Control: public, max-age=2592000
+
+# Cache fonts
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+# Resume PDF - shorter cache so updates propagate
+/resume.pdf
+  Cache-Control: public, max-age=86400
+
+# Security headers for all pages
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

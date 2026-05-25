@@ -120,3 +120,94 @@ export const portfolioData = {
     }
   ] as SkillCategory[]
 };
+
+export function generateTerminalResume(): string {
+  // ANSI Escape Codes
+  const reset = "\x1b[0m";
+  const bold = "\x1b[1m";
+  const dim = "\x1b[2m";
+
+  const blue = "\x1b[34m";
+  const magenta = "\x1b[35m";
+  const white = "\x1b[37m";
+
+  const brightGreen = "\x1b[92m";
+  const brightYellow = "\x1b[93m";
+  const brightCyan = "\x1b[96m";
+  const gray = "\x1b[90m";
+
+  let out = "";
+
+  // 1. ASCII Art Title (Cyan)
+  out += brightCyan + OM_VALANJU_ASCII + reset + "\n";
+
+  // 2. Personal Info Header
+  const info = portfolioData.personalInfo;
+  out += `${bold}${info.name}${reset} | ${info.title}\n`;
+  out += `${dim}Location:${reset} ${info.location}  |  ${dim}Email:${reset} ${brightYellow}${info.email}${reset}\n`;
+  out += `${dim}GitHub:${reset} ${blue}https://${info.github}${reset}  |  ${dim}LinkedIn:${reset} ${blue}https://${info.linkedin}${reset}\n`;
+  out += "\n" + gray + "=".repeat(80) + reset + "\n\n";
+
+  // 3. About Section
+  out += `${bold}${brightCyan}ABOUT${reset}\n`;
+  out += `${gray}${"-".repeat(80)}${reset}\n`;
+  const aboutWords = info.about.split(" ");
+  let aboutLine = "  ";
+  for (const word of aboutWords) {
+    if ((aboutLine + word).length > 80) {
+      out += aboutLine + "\n";
+      aboutLine = "  " + word + " ";
+    } else {
+      aboutLine += word + " ";
+    }
+  }
+  out += aboutLine + "\n\n";
+
+  // 4. Experience Section
+  out += `${bold}${brightCyan}EXPERIENCE${reset}\n`;
+  out += `${gray}${"-".repeat(80)}${reset}\n`;
+
+  for (const exp of portfolioData.experience) {
+    out += `  ${bold}${white}${exp.role}${reset} @ ${bold}${brightGreen}${exp.company}${reset} ${gray}(${exp.dateRange})${reset}\n`;
+    out += `  ${dim}Tech:${reset} ${magenta}${exp.tech.join(", ")}${reset}\n`;
+    for (const detail of exp.details) {
+      const detailPrefix = "  • ";
+      const words = detail.split(" ");
+      let detailLine = detailPrefix;
+      for (const word of words) {
+        if ((detailLine + word).length > 78) {
+          out += detailLine + "\n";
+          detailLine = "    " + word + " ";
+        } else {
+          detailLine += word + " ";
+        }
+      }
+      out += detailLine + "\n";
+    }
+    out += "\n";
+  }
+
+  // 5. Skills Section
+  out += `${bold}${brightCyan}SKILLS${reset}\n`;
+  out += `${gray}${"-".repeat(80)}${reset}\n`;
+  for (const skillCat of portfolioData.skills) {
+    out += `  ${bold}${white}${skillCat.category}:${reset} ${skillCat.items.join(", ")}\n`;
+  }
+  out += "\n";
+
+  // 6. Education Section
+  out += `${bold}${brightCyan}EDUCATION${reset}\n`;
+  out += `${gray}${"-".repeat(80)}${reset}\n`;
+  for (const edu of portfolioData.education) {
+    out += `  ${bold}${white}${edu.degree}${reset}\n`;
+    out += `  ${edu.institution} ${gray}(${edu.dateRange})${reset}\n\n`;
+  }
+
+  // Footer
+  out += gray + "=".repeat(80) + reset + "\n";
+  out += `  ${dim}curl resume.omvalanju.in | Web: https://omvalanju.in${reset}\n`;
+  out += gray + "=".repeat(80) + reset + "\n";
+
+  return out;
+}
+

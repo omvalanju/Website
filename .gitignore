@@ -39,3 +39,5 @@ document*
 
 # Temp directories
 frames/
+.wrangler/
+scratch/

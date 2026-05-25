@@ -7,9 +7,14 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+
+# Build output
 dist
 dist-ssr
+
+# Environment
 *.local
 
 # Editor directories and files
@@ -23,12 +28,14 @@ dist-ssr
 *.sln
 *.sw?
 
-# Temp files from video editing
-frames/
-
-# Large source videos (not the optimized public one)
+# Large media - only keep the optimized bg video in public/
 *.mp4
 !public/bg-video.mp4
 
-# Screenshots
+# Screenshots and misc docs
 Screenshot*
+*.png
+document*
+
+# Temp directories
+frames/
